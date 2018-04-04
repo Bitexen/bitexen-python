@@ -160,10 +160,10 @@ class API(object):
         else:
             return False
 
-    def create_order(self, order_type, market_code, volume, buy_sell, price='0', account_name='Main'):
+    def create_order(self, order_type, market_code, volume, buy_sell, price='0', client_id=0, post_only=False, account_name='Main'):
         method = 'orders/'
         data = { 'order_type':order_type, 'market_code': market_code, 'volume':str(volume), 'buy_sell':buy_sell, 'price':str(price), 
-                                    'account_name':account_name }
+                                   'client_id':client_id, 'post_only':post_only, 'account_name':account_name }
         
         result = dotdict(self._query_private(method, data))
 
