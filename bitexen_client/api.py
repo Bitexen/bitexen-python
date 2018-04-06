@@ -48,13 +48,6 @@ class API(object):
             return request
 
     def __init__(self, uri=None, key=None, secret=None, pass_phrase=None, username=None):
-        """ Create an object with authentication information.
-        :param key: (optional) key identifier for queries to the API
-        :type key: str
-        :param secret: (optional) actual private key used to sign messages
-        :type secret: str
-        :returns: None
-        """
         self.key = key or settings.key
         self.secret = secret or settings.secret
         self.uri = uri or settings.api_uri
