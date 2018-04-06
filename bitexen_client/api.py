@@ -136,12 +136,9 @@ class API(object):
     def get_balance(self, account_name=''):
         method = 'balance/' + str(account_name) + '/'
         result = dotdict(self._query_private(method))
-
+        
         if result.status == 'success':
-            balances = []
-            for balance in result.data['balances']:
-                balances.append(dotdict(balance))
-            return balances 
+            return dotdict(result.data['balances'])
         else:
             return None
 
@@ -160,7 +157,7 @@ class API(object):
         else:
             return False
 
-    def create_order(self, order_type, market_code, volume, buy_sell, price='0', client_id=0, post_only=False, account_name='Main'):
+    def create_order(self, market_code, order_type, buy_sell, volume, price='0', client_id=0, post_only=False, account_name='Main'):
         method = 'orders/'
         data = { 'order_type':order_type, 'market_code': market_code, 'volume':str(volume), 'buy_sell':buy_sell, 'price':str(price), 
                                    'client_id':client_id, 'post_only':post_only, 'account_name':account_name }
@@ -171,6 +168,35 @@ class API(object):
             return result.data['order_number']
         else:
             return None
+
+    def get_order_status(self, order_number):
+        method = 'order_status/' + str(order_number) + '/'
+        result = dotdict(self._query_private(method))
+
+        if result.status == 'success':
+            return dotdict(result.data['order'])
+        else:
+            return None
+
+    def get_ticker(self, market_code=''):
+        method = 'ticker/' + market_code + '/'
+        result = dotdict(self._query_private(method))
+        print(result)
+
+        if result.status == 'success':
+            return dotdict(result.data['ticker'])
+        else:
+            return None
+
+    def get_order_book(self, market_code):
+        method = 'order_book/' + market_code + '/'
+        result = dotdict(self._query_private(method))
+
+        if result.status == 'success':
+            return dotdict(result.data)
+        else:
+            return None
+        
 
 
 

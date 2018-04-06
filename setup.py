@@ -14,8 +14,7 @@ setup(name='bitexen_client',
       author='Bitexen Development Team',
       author_email='development@bitexen.com',
       install_requires=[
-          'requests',
-          'websocket-client'
+          'requests'
       ],
       packages=['bitexen_client', 'bitexen_client.utils'],
       )
