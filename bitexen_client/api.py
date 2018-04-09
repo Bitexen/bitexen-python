@@ -11,6 +11,12 @@ from bitexen_client.utils.dotdict import dotdict
 #ToDo: Missing error handling
 #ToDo: Missing non-success return value handling
 
+class APIException(Exception):
+    def __init__(self, value):
+         self.value = value
+    def __str__(self):
+        return repr(self.value)
+
 class API(object):
     
     class AuthHeaderForAPI(AuthBase):
@@ -103,7 +109,7 @@ class API(object):
             data = {}
 
         if not self.key or not self.secret:
-            raise Exception('Either key or secret is not set! (Use `load_key()`.')
+            raise APIException('Either key or secret is not set! (Use `load_key()`.')
 
         urlpath = self.api_path + method
 
@@ -119,7 +125,9 @@ class API(object):
             orders = []
             for order in result.data['orders']:
                 orders.append(dotdict(order))
-            return orders 
+            return orders
+        elif result.status == 'error':
+            raise APIException(result.reason)
         else:
             return None
 
@@ -133,6 +141,8 @@ class API(object):
             return markets 
         elif result.status == 'success': 
             return dotdict(result.data['markets'])
+        elif result.status == 'error':
+            raise APIException(result.reason)
         else:
             return None
         
@@ -142,6 +152,8 @@ class API(object):
         
         if result.status == 'success':
             return dotdict(result.data['balances'])
+        elif result.status == 'error':
+            raise APIException(result.reason)
         else:
             return None
 
@@ -157,6 +169,8 @@ class API(object):
 
         if result.status == 'success':
             return True
+        elif result.status == 'error':
+            raise APIException(result.reason)
         else:
             return False
 
@@ -169,6 +183,8 @@ class API(object):
 
         if result.status == 'success':
             return result.data['order_number']
+        elif result.status == 'error':
+            raise APIException(result.reason)
         else:
             return None
 
@@ -178,6 +194,8 @@ class API(object):
 
         if result.status == 'success':
             return dotdict(result.data['order'])
+        elif result.status == 'error':
+            raise APIException(result.reason)
         else:
             return None
 
@@ -188,6 +206,8 @@ class API(object):
 
         if result.status == 'success':
             return dotdict(result.data['ticker'])
+        elif result.status == 'error':
+            raise APIException(result.reason)
         else:
             return None
 
@@ -197,6 +217,8 @@ class API(object):
 
         if result.status == 'success':
             return dotdict(result.data)
+        elif result.status == 'error':
+            raise APIException(result.reason)
         else:
             return None
         
