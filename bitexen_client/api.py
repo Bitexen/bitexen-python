@@ -76,7 +76,17 @@ class API(object):
                                           timeout = timeout)
 
         if self.response.status_code not in (200, 201, 202):
-            self.response.raise_for_status()
+            if self.response.status_code == 429:
+                # Rate Limit Exceeded We can retry!
+                time.sleep(5)
+                if data=={}:
+                    self.response = self.session.get(url, auth = auth,
+                                                timeout = timeout)
+                else:
+                    self.response = self.session.post(url, json = data, auth = auth,
+                                                timeout = timeout)
+            else:
+                self.response.raise_for_status()
 
         return self.response.json(**self._json_options)
 
