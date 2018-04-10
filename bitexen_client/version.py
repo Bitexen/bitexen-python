@@ -1,2 +1,2 @@
-__version__ = '0.0.8-alpha'
+__version__ = '0.0.9-alpha'
 __url__ = 'https://github.com/Bitexen/bitexen-python'
