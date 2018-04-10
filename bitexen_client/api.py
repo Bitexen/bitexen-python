@@ -201,7 +201,7 @@ class API(object):
 
     def get_ticker(self, market_code=''):
         method = 'ticker/' + market_code + '/'
-        result = dotdict(self._query_private(method))
+        result = dotdict(self._query_public(method))
         print(result)
 
         if result.status == 'success':
@@ -213,7 +213,7 @@ class API(object):
 
     def get_order_book(self, market_code):
         method = 'order_book/' + market_code + '/'
-        result = dotdict(self._query_private(method))
+        result = dotdict(self._query_public(method))
 
         if result.status == 'success':
             return dotdict(result.data)
