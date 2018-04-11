@@ -28,9 +28,6 @@ class API(object):
             self.secretkey = secretkey
 
         def get_hash(self, request):
-            #data = json.loads(request.body.decode('utf-8'))
-            #data = json.dumps(data)
-            #print(data)
             if request.body:
                 data = request.body.decode('utf-8')
                 message = self.apikey + self.username + self.pass_phrase + self.timestamp + data
@@ -202,7 +199,6 @@ class API(object):
     def get_ticker(self, market_code=''):
         method = 'ticker/' + market_code + '/'
         result = dotdict(self._query_public(method))
-        print(result)
 
         if result.status == 'success':
             return dotdict(result.data['ticker'])
