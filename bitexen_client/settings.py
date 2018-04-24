@@ -21,7 +21,7 @@ def import_path(fullpath):
 
 settings = {}
 try:
-    userSettings = import_path(os.path.join('.', 'bitexen_client_settings'))
+    userSettings = import_path(os.path.join('bitexen_client', 'bitexen_client_settings'))
     settings.update(vars(userSettings))
 except ImportError:
     #ToDo: add loggings
