@@ -16,7 +16,7 @@ class APIException(Exception):
          self.value = value
          self.code = code
     def __str__(self):
-        return repr("{}: {1}".format(self.code, self.value))
+        return repr("{0}: {1}".format(self.code, self.value))
 
 class API(object):
     
