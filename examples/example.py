@@ -54,3 +54,10 @@ def create_order():
     results = api.create_order('BTCTRY', OrderType.LIMIT_ORDER , BuySellType.BUY , 0.001, price='2000')
     print(results)
     return results
+
+
+def withdraw_request():
+    api = API(uri='http://dev.bitexen.com/', key=None, secret=None, pass_phrase=None, username=None)
+    results = api.withdraw_request('XRP', 100.22, 'alias')
+    print(results)
+    return results
