@@ -218,13 +218,16 @@ class API(object):
             raise APIException(result.status_code, result.reason)
         else:
             return None
-        
 
+    def withdraw_request(self, currency_code, amount, alias):
+        method = 'withdrawal/request/'
+        data = {'currency_code': currency_code, 'amount': str(amount), 'alias': alias}
 
+        result = dotdict(self._query_private(method, data))
 
-
-
-        
-
-    
-        
+        if result.status == 'success':
+            return True
+        elif result.status == 'error':
+            raise APIException(result.status_code, result.reason)
+        else:
+            return None
