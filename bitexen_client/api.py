@@ -51,12 +51,13 @@ class API(object):
             })
             return request
 
-    def __init__(self, uri=None, key=None, secret=None, pass_phrase=None, username=None):
+    def __init__(self, uri=None, key=None, secret=None, pass_phrase=None, username=None, timeout=5):
         self.key = key or settings.key
         self.secret = secret or settings.secret
         self.uri = uri or settings.api_uri
         self.pass_phrase = pass_phrase or settings.pass_phrase
         self.username = username or settings.username
+        self.timeout = timeout
         self.api_path = '/api/v1/'
         self.session = requests.Session()
         self.session.headers.update({
@@ -117,7 +118,7 @@ class API(object):
 
     def _get_orders(self, account_name='Main', status='', market_code=''):
         method = 'orders/' + str(account_name) + '/' + status + '/' + market_code + '/'
-        result = dotdict(self._query_private(method))
+        result = dotdict(self._query_private(method, timeout=self.timeout))
 
         if result.status == 'success':
             orders = []
@@ -131,7 +132,7 @@ class API(object):
 
     def get_market_info(self, market_code=''):
         method = 'market_info/' + market_code + '/'
-        result = dotdict(self._query_public(method))
+        result = dotdict(self._query_public(method, timeout=self.timeout))
         if result.status=='success' and market_code == '':
             markets = []
             for market in result.data['markets']:
@@ -146,7 +147,7 @@ class API(object):
         
     def get_balance(self, account_name=''):
         method = 'balance/' + str(account_name) + '/'
-        result = dotdict(self._query_private(method))
+        result = dotdict(self._query_private(method, timeout=self.timeout))
         
         if result.status == 'success':
             return dotdict(result.data['balances'])
@@ -163,7 +164,7 @@ class API(object):
 
     def cancel_order(self, order_number):
         method = 'cancel_order/' + str(order_number) + '/'
-        result = dotdict(self._query_private(method, {'order_number':order_number}))
+        result = dotdict(self._query_private(method, {'order_number':order_number}, timeout=self.timeout))
 
         if result.status == 'success':
             return True
@@ -177,7 +178,7 @@ class API(object):
         data = { 'order_type':order_type, 'market_code': market_code, 'volume':str(volume), 'buy_sell':buy_sell, 'price':str(price), 
                                    'client_id':client_id, 'post_only':post_only, 'account_name':account_name }
         
-        result = dotdict(self._query_private(method, data))
+        result = dotdict(self._query_private(method, data, timeout=self.timeout))
 
         if result.status == 'success':
             return result.data['order_number']
@@ -188,7 +189,7 @@ class API(object):
 
     def get_order_status(self, order_number):
         method = 'order_status/' + str(order_number) + '/'
-        result = dotdict(self._query_private(method))
+        result = dotdict(self._query_private(method, timeout=self.timeout))
 
         if result.status == 'success':
             return dotdict(result.data['order'])
@@ -199,7 +200,7 @@ class API(object):
 
     def get_ticker(self, market_code=''):
         method = 'ticker/' + market_code + '/'
-        result = dotdict(self._query_public(method))
+        result = dotdict(self._query_public(method, timeout=self.timeout))
 
         if result.status == 'success':
             return dotdict(result.data['ticker'])
@@ -210,7 +211,7 @@ class API(object):
 
     def get_order_book(self, market_code):
         method = 'order_book/' + market_code + '/'
-        result = dotdict(self._query_public(method))
+        result = dotdict(self._query_public(method, timeout=self.timeout))
 
         if result.status == 'success':
             return dotdict(result.data)
@@ -223,7 +224,7 @@ class API(object):
         method = 'withdrawal/request/'
         data = {'currency_code': currency_code, 'amount': str(amount), 'alias': alias}
 
-        result = dotdict(self._query_private(method, data))
+        result = dotdict(self._query_private(method, data, timeout=self.timeout))
 
         if result.status == 'success':
             return True
