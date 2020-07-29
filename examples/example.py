@@ -14,7 +14,8 @@ def ticker():
     return results
 
 def market_info():
-    api = API(uri='https://www.bitexen.com/') #api = API(uri='https://www.bitexen.com/', key='', secret='', pass_phrase='', username='')
+    # api = API(uri='https://www.bitexen.com/', key='', secret='', pass_phrase='', username='')
+    api = API(uri='https://www.bitexen.com/')
     results = api.get_ticker('BTCTRY')
     print(results)
     return results
@@ -54,7 +55,6 @@ def create_order():
     results = api.create_order('BTCTRY', OrderType.LIMIT_ORDER , BuySellType.BUY , 0.001, price='2000')
     print(results)
     return results
-
 
 def withdraw_request():
     api = API(uri='https://www.bitexen.com/', key=None, secret=None, pass_phrase=None, username=None)

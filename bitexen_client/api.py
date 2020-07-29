@@ -1,15 +1,20 @@
-import requests
-from requests.auth import AuthBase
-import hmac
 import hashlib
+import hmac
+import requests
 import time
 
-from . import version
+import bitexen_client.version as version
+
+from requests.auth import AuthBase
+
 from bitexen_client.settings import settings
 from bitexen_client.utils.dotdict import dotdict
 
-#ToDo: Missing error handling
-#ToDo: Missing non-success return value handling
+"""
+TODOS:
+    - Missing error handling
+    - Missing non-success return value handling
+"""
 
 class APIException(Exception):
     def __init__(self, code, value):
@@ -19,7 +24,7 @@ class APIException(Exception):
         return repr("{0}: {1}".format(self.code, self.value))
 
 class API(object):
-    
+
     class AuthHeaderForAPI(AuthBase):
         def __init__(self, apikey, username, pass_phrase, timestamp, secretkey):
             self.apikey = apikey
@@ -137,18 +142,18 @@ class API(object):
             markets = []
             for market in result.data['markets']:
                 markets.append(dotdict(market))
-            return markets 
-        elif result.status == 'success': 
+            return markets
+        elif result.status == 'success':
             return dotdict(result.data['markets'])
         elif result.status == 'error':
             raise APIException(result.status_code, result.reason)
         else:
             return None
-        
+
     def get_balance(self, account_name=''):
         method = 'balance/' + str(account_name) + '/'
         result = dotdict(self._query_private(method, timeout=self.timeout))
-        
+
         if result.status == 'success':
             return dotdict(result.data['balances'])
         elif result.status == 'error':
@@ -175,9 +180,9 @@ class API(object):
 
     def create_order(self, market_code, order_type, buy_sell, volume, price='0', client_id=0, post_only=False, account_name='Main'):
         method = 'orders/'
-        data = { 'order_type':order_type, 'market_code': market_code, 'volume':str(volume), 'buy_sell':buy_sell, 'price':str(price), 
+        data = { 'order_type':order_type, 'market_code': market_code, 'volume':str(volume), 'buy_sell':buy_sell, 'price':str(price),
                                    'client_id':client_id, 'post_only':post_only, 'account_name':account_name }
-        
+
         result = dotdict(self._query_private(method, data, timeout=self.timeout))
 
         if result.status == 'success':

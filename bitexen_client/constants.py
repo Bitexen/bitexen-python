@@ -14,5 +14,4 @@ class OrderType():
     STOP_ORDER = "stop"
     MARKET_ORDER = "market"
     CANCEL_ORDER = "cancel"
-    CANCEL_ALL_ORDER = "cancel_all" 
-
+    CANCEL_ALL_ORDER = "cancel_all"
