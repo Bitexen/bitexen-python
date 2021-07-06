@@ -6,6 +6,7 @@ import sys
 
 from bitexen_client.utils.dotdict import dotdict
 
+
 def import_path(fullpath):
     """
     Import a file with full path specification. Allows one to
@@ -19,12 +20,13 @@ def import_path(fullpath):
     del sys.path[0]
     return module
 
+
 settings = {}
 try:
     userSettings = import_path(os.path.join('bitexen_client', 'bitexen_client_settings'))
     settings.update(vars(userSettings))
 except ImportError:
-    #ToDo: add loggings
+    # ToDo: add loggings
     pass
 
 settings = dotdict(settings)

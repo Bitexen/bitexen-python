@@ -2,12 +2,14 @@ class BuySellType():
     BUY = "B"
     SELL = "S"
 
+
 class OrderStatus():
     NEW = "N"
     PARTIALFILLED = "P"
     FILLED = "F"
     CANCELED = "C"
     REJECTED = "R"
+
 
 class OrderType():
     LIMIT_ORDER = "limit"

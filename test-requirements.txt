@@ -1,0 +1,5 @@
+coverage
+flake8
+python-coveralls
+tox
+setuptools
