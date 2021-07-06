@@ -16,12 +16,15 @@ TODOS:
     - Missing non-success return value handling
 """
 
+
 class APIException(Exception):
     def __init__(self, code, value):
-         self.value = value
-         self.code = code
+        self.value = value
+        self.code = code
+
     def __str__(self):
         return repr("{0}: {1}".format(self.code, self.value))
+
 
 class API(object):
 
@@ -41,8 +44,8 @@ class API(object):
                 message = self.apikey + self.username + self.pass_phrase + self.timestamp + "{}"
 
             signature = hmac.new(str.encode(self.secretkey),
-                                msg=str.encode(message),
-                                digestmod=hashlib.sha256).hexdigest().upper()
+                                 msg=str.encode(message),
+                                 digestmod=hashlib.sha256).hexdigest().upper()
             return signature
 
         def __call__(self, request):
@@ -78,23 +81,23 @@ class API(object):
 
         url = self.uri + urlpath
 
-        if data=={}:
-            self.response = self.session.get(url, auth = auth,
-                                          timeout = timeout)
+        if data == {}:
+            self.response = self.session.get(url, auth=auth,
+                                             timeout=timeout)
         else:
-            self.response = self.session.post(url, json = data, auth = auth,
-                                          timeout = timeout)
+            self.response = self.session.post(url, json=data, auth=auth,
+                                              timeout=timeout)
 
         if self.response.status_code not in (200, 201, 202):
             if self.response.status_code == 429:
                 # Rate Limit Exceeded We can retry!
                 time.sleep(5)
-                if data=={}:
-                    self.response = self.session.get(url, auth = auth,
-                                                timeout = timeout)
+                if data == {}:
+                    self.response = self.session.get(url, auth=auth,
+                                                     timeout=timeout)
                 else:
-                    self.response = self.session.post(url, json = data, auth = auth,
-                                                timeout = timeout)
+                    self.response = self.session.post(url, json=data, auth=auth,
+                                                      timeout=timeout)
             else:
                 self.response.raise_for_status()
 
@@ -106,7 +109,7 @@ class API(object):
 
         urlpath = self.api_path + method
 
-        return self._query(urlpath, data, timeout = timeout)
+        return self._query(urlpath, data, timeout=timeout)
 
     def _query_private(self, method, data=None, timeout=None):
         if data is None:
@@ -119,7 +122,7 @@ class API(object):
 
         auth = self.AuthHeaderForAPI(self.key, self.username, self.pass_phrase, str(time.time()), self.secret)
 
-        return self._query(urlpath, data, auth = auth, timeout = timeout)
+        return self._query(urlpath, data, auth=auth, timeout=timeout)
 
     def _get_orders(self, account_name='Main', status='', market_code=''):
         method = 'orders/' + str(account_name) + '/' + status + '/' + market_code + '/'
@@ -138,7 +141,7 @@ class API(object):
     def get_market_info(self, market_code=''):
         method = 'market_info/' + market_code + '/'
         result = dotdict(self._query_public(method, timeout=self.timeout))
-        if result.status=='success' and market_code == '':
+        if result.status == 'success' and market_code == '':
             markets = []
             for market in result.data['markets']:
                 markets.append(dotdict(market))
@@ -169,7 +172,7 @@ class API(object):
 
     def cancel_order(self, order_number):
         method = 'cancel_order/' + str(order_number) + '/'
-        result = dotdict(self._query_private(method, {'order_number':order_number}, timeout=self.timeout))
+        result = dotdict(self._query_private(method, {'order_number': order_number}, timeout=self.timeout))
 
         if result.status == 'success':
             return True
@@ -180,8 +183,8 @@ class API(object):
 
     def create_order(self, market_code, order_type, buy_sell, volume, price='0', client_id=0, post_only=False, account_name='Main'):
         method = 'orders/'
-        data = { 'order_type':order_type, 'market_code': market_code, 'volume':str(volume), 'buy_sell':buy_sell, 'price':str(price),
-                                   'client_id':client_id, 'post_only':post_only, 'account_name':account_name }
+        data = {'order_type': order_type, 'market_code': market_code, 'volume': str(volume), 'buy_sell': buy_sell, 'price': str(price),
+                'client_id': client_id, 'post_only': post_only, 'account_name': account_name}
 
         result = dotdict(self._query_private(method, data, timeout=self.timeout))
 
