@@ -7,7 +7,7 @@
   [![Python 3.7+](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
   [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-  [Documentation](https://github.com/Bitexen/bitexen-python) • [API Reference](https://www.bitexen.com/api) • [Examples](examples/)
+  [API Documentation](https://docs.bitexen.com) | [Examples](examples/)
 </div>
 
 ---
@@ -31,7 +31,7 @@
 
 ## 📦 Installation
 
-### From PyPI (Recommended)
+### From PyPI
 
 ```bash
 pip install bitexen-client
