@@ -4,6 +4,7 @@ __pycache__/
 *$py.class
 
 /settings.py
+bitexen_client_settings.py
 
 # C extensions
 *.so

@@ -1,15 +1,17 @@
-class BuySellType():
+class BuySellType:
     BUY = "B"
     SELL = "S"
 
-class OrderStatus():
+
+class OrderStatus:
     NEW = "N"
     PARTIALFILLED = "P"
     FILLED = "F"
     CANCELED = "C"
     REJECTED = "R"
 
-class OrderType():
+
+class OrderType:
     LIMIT_ORDER = "limit"
     STOP_ORDER = "stop"
     MARKET_ORDER = "market"
